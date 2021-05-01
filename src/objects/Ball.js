@@ -35,7 +35,17 @@ class Ball extends Phaser.GameObjects.Ellipse {
   }
 
   shoot(target) {
-    const bullet = this.scene.add.bullet(this, target);
+    const colors = [
+      0x00ff00,
+      0xff0000,
+      0x0000ff,
+      0xffff00,
+      0xffa500,
+      0x4b0082,
+      0xee82ee,
+    ];
+    const pickedColor = Math.floor(Math.random() * colors.length);
+    const bullet = this.scene.add.bullet(this, target, colors[pickedColor]);
     this.scene.physics.add.existing(bullet);
     this.scene.bulletsGroup.add(bullet);
     // const bullet = this.scene.add.bullet(this.x, this.y, x, y);

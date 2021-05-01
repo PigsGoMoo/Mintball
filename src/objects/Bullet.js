@@ -1,9 +1,10 @@
 const Phaser = require('phaser');
 
 const SPEED = 1500;
+
 class Bullet extends Phaser.GameObjects.Ellipse {
-  constructor(scene, player, pointer) {
-    super(scene, player.x, player.y, 5, 5, 0x00ff00);
+  constructor(scene, player, pointer, color) {
+    super(scene, player.x, player.y, 5, 5, color);
     this.lifespan = 5000;
     this.pointer = pointer;
     this.initialized = false;
