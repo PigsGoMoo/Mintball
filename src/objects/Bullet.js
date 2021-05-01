@@ -1,17 +1,13 @@
-const Phaser = require("phaser");
+const Phaser = require('phaser');
 
-const LIFESPAN = 500;
 const SPEED = 1500;
 class Bullet extends Phaser.GameObjects.Ellipse {
   constructor(scene, player, pointer) {
     super(scene, player.x, player.y, 5, 5, 0x00ff00);
-
+    this.lifespan = 5000;
     this.pointer = pointer;
     this.initialized = false;
 
-    setTimeout(() => {
-      this.destroy();
-    }, LIFESPAN);
     scene.add.existing(this);
   }
 
@@ -24,9 +20,19 @@ class Bullet extends Phaser.GameObjects.Ellipse {
       this.initialized = true;
     }
   }
+
+  update(time, delta) {
+    console.log('Update running on bullet');
+    this.lifespan -= delta;
+
+    if (this.lifespan <= 0) {
+      this.setActive(false);
+      this.setVisible(false);
+    }
+  }
 }
 
-Phaser.GameObjects.GameObjectFactory.register("bullet", function (...args) {
+Phaser.GameObjects.GameObjectFactory.register('bullet', function (...args) {
   const bullet = new Bullet(this.scene, ...args);
 
   this.displayList.add(bullet);

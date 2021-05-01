@@ -1,4 +1,4 @@
-const Phaser = require("phaser");
+const Phaser = require('phaser');
 
 const ACCELERATION = 40;
 class Ball extends Phaser.GameObjects.Ellipse {
@@ -6,6 +6,8 @@ class Ball extends Phaser.GameObjects.Ellipse {
     super(scene, ...args);
     this.initialized = false;
     scene.add.existing(this);
+    this.cooldown = 100;
+    this.nextShot = 0;
   }
 
   // For some reason, Phaser needs this empty method.
@@ -35,11 +37,14 @@ class Ball extends Phaser.GameObjects.Ellipse {
   shoot(target) {
     const bullet = this.scene.add.bullet(this, target);
     this.scene.physics.add.existing(bullet);
+    this.scene.bulletsGroup.add(bullet);
     // const bullet = this.scene.add.bullet(this.x, this.y, x, y);
   }
+
+  update(time, delta) {}
 }
 
-Phaser.GameObjects.GameObjectFactory.register("ball", function (...args) {
+Phaser.GameObjects.GameObjectFactory.register('ball', function (...args) {
   const ball = new Ball(this.scene, ...args);
 
   this.displayList.add(ball);

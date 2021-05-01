@@ -1,10 +1,16 @@
-const world = require("../world");
-const { width, height } = require("../constants");
+const world = require('../world');
+const { width, height } = require('../constants');
+const Bullets = require('../objects/Bullet');
 
 module.exports = function create() {
   // spawn player
   const player = this.add.ball(300, 400, 30, 30, 0xffffff);
   world.player = this.physics.add.existing(player);
+
+  this.bulletsGroup = this.physics.add.group({
+    classType: Bullets,
+    runChildUpdate: true,
+  });
 
   // set target
   const target = this.add.ball(
