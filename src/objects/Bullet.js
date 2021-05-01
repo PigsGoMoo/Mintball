@@ -23,7 +23,6 @@ class Bullet extends Phaser.GameObjects.Ellipse {
   }
 
   update(time, delta) {
-    console.log('Update running on bullet');
     this.lifespan -= delta;
 
     if (this.lifespan <= 0) {

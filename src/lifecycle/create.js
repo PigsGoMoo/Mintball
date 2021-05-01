@@ -24,6 +24,14 @@ module.exports = function create() {
   target.body.setVelocityX(Math.random() * 1000);
   target.body.setVelocityY(Math.random() * 500);
 
+  // this.physics.add.overlap(this.bulletsGroup, target, (bullet, target) => {
+  //   bullet.setVisible(false);
+  //   bullet.setActive(false);
+  //   target.setVisible(false);
+  //   target.setActive(false);
+  //   target.body.enable = false;
+  // });
+
   // set walls
   this.physics.world.setBounds(0, 0, width, height);
 };
