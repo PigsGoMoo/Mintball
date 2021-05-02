@@ -4,10 +4,12 @@ const ACCELERATION = 40;
 class Ball extends Phaser.GameObjects.Ellipse {
   constructor(scene, ...args) {
     super(scene, ...args);
+    this.scene = scene;
     this.initialized = false;
-    scene.add.existing(this);
     this.cooldown = 100;
     this.nextShot = 0;
+    this.scene.add.existing(this);
+    this.scene.physics.world.enable(this);
   }
 
   // For some reason, Phaser needs this empty method.
