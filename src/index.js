@@ -1,4 +1,8 @@
 const Phaser = require('phaser');
+const MainScene = require('./scenes/MainScene');
+const GameScene = require('./scenes/GameScene');
+const config = require('./config/config');
+
 // const create = require('./lifecycle/create');
 // const preload = require('./lifecycle/preload');
 // const update = require('./lifecycle/update');
@@ -45,6 +49,9 @@ const Phaser = require('phaser');
 export default class Game extends Phaser.Game {
   constructor() {
     super(config);
+    this.scene.add('MainScene', MainScene);
+    this.scene.add('GameScene', GameScene);
+    this.scene.start('MainScene');
   }
 }
 

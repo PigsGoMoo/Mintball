@@ -1,7 +1,8 @@
 const Phaser = require('phaser');
 
 const ACCELERATION = 40;
-class Ball extends Phaser.GameObjects.Ellipse {
+
+export default class Ball extends Phaser.GameObjects.Ellipse {
   constructor(scene, ...args) {
     super(scene, ...args);
     this.scene = scene;
@@ -56,11 +57,12 @@ class Ball extends Phaser.GameObjects.Ellipse {
   update(time, delta) {}
 }
 
-Phaser.GameObjects.GameObjectFactory.register('ball', function (...args) {
-  const ball = new Ball(this.scene, ...args);
+// this is a factory function
+// Phaser.GameObjects.GameObjectFactory.register('ball', function (...args) {
+//   const ball = new Ball(this.scene, ...args);
 
-  this.displayList.add(ball);
-  this.updateList.add(ball);
+//   this.displayList.add(ball);
+//   this.updateList.add(ball);
 
-  return ball;
-});
+//   return ball;
+// });

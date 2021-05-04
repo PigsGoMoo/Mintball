@@ -1,4 +1,7 @@
 const Phaser = require('phaser');
+const Bullets = require('../objects/Bullet');
+const { width, height } = require('../config/constants');
+const Ball = require('../objects/Ball');
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -7,7 +10,7 @@ export default class GameScene extends Phaser.Scene {
   // this is a method on the class
   create() {
     // spawn player
-    this.player = this.add.ball(300, 400, 30, 30, 0xffffff);
+    this.player = new Ball(300, 400, 30, 30, 0xffffff);
     // world.player = this.physics.add.existing(player);
 
     this.bulletsGroup = this.physics.add.group({
@@ -16,62 +19,67 @@ export default class GameScene extends Phaser.Scene {
     });
 
     // set target
-    const target = this.add.ball(
+    this.target = new Ball(
       Math.random() * width,
       Math.random() * height,
       30,
       30,
       0xff0000
     );
-    world.target = this.physics.add.existing(target);
-    target.body.setVelocityX(Math.random() * 1000);
-    target.body.setVelocityY(Math.random() * 500);
+    // world.target = this.physics.add.existing(target);
+    this.target.body.setVelocityX(Math.random() * 1000);
+    this.target.body.setVelocityY(Math.random() * 500);
 
-    this.physics.add.overlap(this.bulletsGroup, target, (bullet, target) => {
-      bullet.setVisible(false);
-      bullet.setActive(false);
-      target.setVisible(false);
-      target.setActive(false);
-      target.body.enable = false;
-    });
+    this.physics.add.overlap(
+      this.bulletsGroup,
+      this.target,
+      (bullet, target) => {
+        bullet.setVisible(false);
+        bullet.setActive(false);
+        target.setVisible(false);
+        target.setActive(false);
+        target.body.enable = false;
+      }
+    );
 
     // set walls
     this.physics.world.setBounds(0, 0, width, height);
-  }
 
-  update(time, delta) {
-    const cursors = this.input.keyboard.createCursorKeys();
-    const shoot = this.input.keyboard.addKeys({
+    // set up hot keys
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.shoot = this.input.keyboard.addKeys({
       space: Phaser.Input.Keyboard.KeyCodes.SPACE,
       left: Phaser.Input.Keyboard.KeyCodes.A,
       up: Phaser.Input.Keyboard.KeyCodes.W,
       down: Phaser.Input.Keyboard.KeyCodes.S,
       right: Phaser.Input.Keyboard.KeyCodes.D,
     });
+  }
 
-    const { left, right, up, down } = shoot;
-    const { player } = world;
+  update(time, delta) {
+    const { left, right, up, down } = this.shoot;
+    // const { player } = world;
 
     if (left.isDown) {
-      player.left();
+      this.player.left();
     }
 
     if (right.isDown) {
-      player.right();
+      this.player.right();
     }
 
     if (up.isDown) {
-      player.up();
+      this.player.up();
     }
 
     if (down.isDown) {
-      player.down();
+      this.player.down();
     }
 
     this.input.on('pointerdown', function (pointer) {
-      if (time > player.nextShot) {
-        player.shoot(pointer);
-        player.nextShot = time + player.cooldown;
+      if (time > this.player.nextShot) {
+        this.player.shoot(pointer);
+        this.player.nextShot = time + this.player.cooldown;
       }
     });
   }
