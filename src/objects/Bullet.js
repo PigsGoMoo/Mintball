@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 const SPEED = 1500;
 
-class Bullet extends Phaser.GameObjects.Ellipse {
+export default class Bullet extends Phaser.GameObjects.Ellipse {
   constructor(scene, player, pointer, color) {
     super(scene, player.x, player.y, 5, 5, color);
     this.lifespan = 5000;
