@@ -1,7 +1,8 @@
-const Phaser = require('phaser');
-const MainScene = require('./scenes/MainScene');
-const GameScene = require('./scenes/GameScene');
-const config = require('./config/config');
+import Phaser from 'phaser';
+import MainScene from './scenes/MainScene';
+import GameScene from './scenes/GameScene';
+// const config = require('./config/config');
+import config from './config/config';
 
 // const create = require('./lifecycle/create');
 // const preload = require('./lifecycle/preload');
@@ -24,13 +25,8 @@ const config = require('./config/config');
 //     green: 0x08,
 //   },
 //   type: Phaser.AUTO,
-//   width,
-//   height,
-//   scene: {
-//     preload,
-//     create,
-//     update,
-//   },
+//   width: 800,
+//   height: 600,
 //   physics: {
 //     default: 'arcade',
 //     arcade: {
@@ -51,7 +47,7 @@ export default class Game extends Phaser.Game {
     super(config);
     this.scene.add('MainScene', MainScene);
     this.scene.add('GameScene', GameScene);
-    this.scene.start('MainScene');
+    this.scene.start('GameScene');
   }
 }
 
@@ -59,4 +55,5 @@ export default class Game extends Phaser.Game {
 window.onload = function () {
   // we're calling it window.game
   window.game = new Game();
+  console.log(`Window loaded`);
 };

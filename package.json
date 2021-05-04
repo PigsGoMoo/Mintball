@@ -5,10 +5,11 @@
   "author": "Monarch Wadia <monarch@mintbean.io>",
   "license": "MIT",
   "scripts": {
-    "start": "parcel serve index.html"
+    "start": "webpack -w"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.12.5"
+    "webpack": "^5.36.2",
+    "webpack-cli": "^4.6.0"
   },
   "dependencies": {
     "phaser": "^3.54.0"

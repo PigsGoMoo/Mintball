@@ -1,4 +1,4 @@
-const Phaser = require('phaser');
+import Phaser from 'phaser';
 
 export default class MainScene extends Phaser.Scene {
   constructor() {
@@ -8,5 +8,6 @@ export default class MainScene extends Phaser.Scene {
 
   create() {
     this.scene.launch('GameScene');
+    console.log(`Main Scene`);
   }
 }

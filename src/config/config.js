@@ -5,11 +5,11 @@ export default {
   scale: {
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  backgroundColor: {
-    red: 0x10,
-    blue: 0xff,
-    green: 0x08,
-  },
+  // backgroundColor: {
+  //   red: 0x10,
+  //   blue: 0xff,
+  //   green: 0x08,
+  // },
   type: Phaser.AUTO,
   width,
   height,
