@@ -24,10 +24,12 @@ export default class Bullet extends Phaser.GameObjects.Ellipse {
 
   update(time, delta) {
     this.lifespan -= delta;
-
     if (this.lifespan <= 0) {
       this.setActive(false);
       this.setVisible(false);
+      this.body.enable = false;
+      // this.setVelocityX(0);
+      // this.setVelocityY(0);
     }
   }
 }

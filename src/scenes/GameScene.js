@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import Bullets from '../objects/Bullet';
 import { width, height } from '../config/constants';
 import Ball from '../objects/Ball';
+import EnemyBall from '../objects/EnemyBall';
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -13,36 +14,45 @@ export default class GameScene extends Phaser.Scene {
   }
 
   // this is a method on the class
-
   create() {
     console.log(`Game Scene`);
     console.log(`this context:`, this.sys.queueDepthSort);
     // spawn player
     this.player = new Ball(this, 300, 400);
     this.player.setScale(0.15);
-    // world.player = this.physics.add.existing(player);
-
     this.bulletsGroup = this.physics.add.group({
       classType: Bullets,
       runChildUpdate: true,
     });
+    this.enemiesGroup = this.physics.add.group({
+      classType: EnemyBall,
+      runChildUpdate: true,
+      collideWorldBounds: true,
+      bounceX: 0.9,
+      bounceY: 0.9,
+      gravityY: 2000,
+      velocityX: 1000,
+      velocityY: 500,
+    });
 
     // set target
-    this.target = new Ball(this, 30, 30);
+    this.target = new EnemyBall(this, 30, 30);
     this.target.setScale(0.15).setTint(0xff0000);
-    // world.target = this.physics.add.existing(target);
     this.target.body.setVelocityX(Math.random() * 1000);
     this.target.body.setVelocityY(Math.random() * 500);
-
+    this.enemiesGroup.add(this.target);
     this.physics.add.overlap(
       this.bulletsGroup,
-      this.target,
+      this.enemiesGroup,
       (bullet, target) => {
         bullet.setVisible(false);
         bullet.setActive(false);
-        target.setVisible(false);
-        target.setActive(false);
-        target.body.enable = false;
+        // this gives it the body (a hit box)
+        bullet.body.enable = false;
+        // bullet.setVelocityX(0);
+        // bullet.setVelocityY(0);
+        console.log('target is ', target);
+        target.takeDamage(5);
       }
     );
 

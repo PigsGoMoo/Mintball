@@ -7,12 +7,13 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, 'ball');
     this.scene = scene;
     this.initialized = false;
-    this.cooldown = 0;
+    this.cooldown = 1000;
     this.nextShot = 0;
     this.scene.add.existing(this);
     this.scene.physics.world.enable(this);
     this.body.collideWorldBounds = true;
     this.body.bounce.setTo(0.9, 0.9);
+    this.health = 1;
   }
 
   // For some reason, Phaser needs this empty method.
@@ -37,6 +38,19 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
 
   down() {
     this.body.setVelocityY(this.body.velocity.y + ACCELERATION);
+  }
+
+  takeDamage(damage) {
+    this.health -= damage;
+    if (this.health <= 0) {
+      // this will remove the killed ball from the game
+      this.split();
+      this.setActive(false);
+      this.setVisible(false);
+      this.body.enable = false;
+      this.setVelocityX(0);
+      this.setVelocityY(0);
+    }
   }
 
   shoot(time) {
