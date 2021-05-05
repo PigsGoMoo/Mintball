@@ -38,13 +38,12 @@ export default class EnemyBall extends Phaser.Physics.Arcade.Sprite {
         this.y + Math.random() * 30
       );
       ball.setScale(0.15).setTint(0x800080);
-      this.scene.enemiesGroup.add(ball);
+      // this.scene.enemiesGroup.add(ball);
       ball.setVelocityX(Math.random() * 100);
-      ball.setVelocityY(Math.random() * 300);
+      ball.setVelocityY(Math.random() * 1000 + 500);
       this.scene.time.delayedCall(1000, () => {
-        this.takeDamage(5);
+        ball.takeDamage(5);
       });
-      console.log('for loop i = ', i);
     }
   }
 
@@ -60,9 +59,7 @@ export default class EnemyBall extends Phaser.Physics.Arcade.Sprite {
       this.body.enable = false;
       this.setVelocityX(0);
       this.setVelocityY(0);
-      console.log('inside if statement');
     }
-    console.log('taking damage');
   }
 
   update(time, delta) {
