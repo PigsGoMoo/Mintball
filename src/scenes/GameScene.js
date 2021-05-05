@@ -31,16 +31,16 @@ export default class GameScene extends Phaser.Scene {
       bounceX: 0.9,
       bounceY: 0.9,
       gravityY: 2000,
-      velocityX: 1000,
-      velocityY: 500,
+      // velocityX: 500,
+      // velocityY: 500,
     });
 
     // set target
     this.target = new EnemyBall(this, 30, 30);
     this.target.setScale(0.15).setTint(0xff0000);
+    this.enemiesGroup.add(this.target);
     this.target.body.setVelocityX(Math.random() * 1000);
     this.target.body.setVelocityY(Math.random() * 500);
-    this.enemiesGroup.add(this.target);
     this.physics.add.overlap(
       this.bulletsGroup,
       this.enemiesGroup,

@@ -16,17 +16,18 @@ export default class EnemyBall extends Phaser.Physics.Arcade.Sprite {
 
   split() {
     // we want to duplicate the ball when it's hit
-    let ballOne = new EnemyBall(this.scene, this.x + 10, this.y + 5);
-    let ballTwo = new EnemyBall(this.scene, this.x + 3, this.y + 4);
-
+    let ballOne = new EnemyBall(this.scene, this.x + 30, this.y + 5);
+    let ballTwo = new EnemyBall(this.scene, this.x + 3, this.y + 10);
+    // ballOne.body.setVelocityX(Math.random() * 1000);
     ballOne.setScale(0.15).setTint(0x800080);
-    ballOne.setVelocityX(Math.random() * 1000);
-    ballOne.setVelocityY(Math.random() * 500);
+    // ballOne.setVelocityX(1000);
     ballTwo.setScale(0.15).setTint(0x800080);
-    ballTwo.setVelocityX(Math.random() * 1000);
-    ballTwo.setVelocityY(Math.random() * 500);
     this.scene.enemiesGroup.add(ballOne);
     this.scene.enemiesGroup.add(ballTwo);
+    ballTwo.setVelocityX(Math.random() * 1000 + 100);
+    ballTwo.setVelocityY(Math.random() * 500);
+    ballOne.setVelocityX(5000);
+    ballOne.setVelocityY(2000);
   }
 
   takeDamage(damage) {
