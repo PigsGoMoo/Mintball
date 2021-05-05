@@ -51,7 +51,6 @@ export default class GameScene extends Phaser.Scene {
         bullet.body.enable = false;
         // bullet.setVelocityX(0);
         // bullet.setVelocityY(0);
-        console.log('target is ', target);
         target.takeDamage(5);
       }
     );

@@ -7,7 +7,7 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, 'ball');
     this.scene = scene;
     this.initialized = false;
-    this.cooldown = 1000;
+    this.cooldown = 500;
     this.nextShot = 0;
     this.scene.add.existing(this);
     this.scene.physics.world.enable(this);

@@ -26,22 +26,43 @@ export default class EnemyBall extends Phaser.Physics.Arcade.Sprite {
     this.scene.enemiesGroup.add(ballTwo);
     ballTwo.setVelocityX(Math.random() * 1000 + 100);
     ballTwo.setVelocityY(Math.random() * 500);
-    ballOne.setVelocityX(5000);
-    ballOne.setVelocityY(2000);
+    ballOne.setVelocityX(Math.random() * 2000 + 100);
+    ballOne.setVelocityY(Math.random() * 1000);
+  }
+
+  explode() {
+    for (let i = 0; i < 5; i++) {
+      const ball = new EnemyBall(
+        this.scene,
+        this.x + Math.random() * 30,
+        this.y + Math.random() * 30
+      );
+      ball.setScale(0.15).setTint(0x800080);
+      this.scene.enemiesGroup.add(ball);
+      ball.setVelocityX(Math.random() * 100);
+      ball.setVelocityY(Math.random() * 300);
+      this.scene.time.delayedCall(1000, () => {
+        this.takeDamage(5);
+      });
+      console.log('for loop i = ', i);
+    }
   }
 
   takeDamage(damage) {
     this.health -= damage;
     if (this.health <= 0) {
       // this will remove the killed ball from the game
-      console.log(this.tintTopLeft);
-      if (this.tintTopLeft === 16711680) this.split();
+
+      if (this.tintTopLeft === 16711680) this.explode();
+
       this.setActive(false);
       this.setVisible(false);
       this.body.enable = false;
       this.setVelocityX(0);
       this.setVelocityY(0);
+      console.log('inside if statement');
     }
+    console.log('taking damage');
   }
 
   update(time, delta) {
