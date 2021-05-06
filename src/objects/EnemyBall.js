@@ -12,15 +12,27 @@ export default class EnemyBall extends Phaser.Physics.Arcade.Sprite {
     this.body.collideWorldBounds = true;
     this.body.bounce.setTo(0.9, 0.9);
     this.health = 1;
+    this.spawn();
+    this.bounceTime = 0;
+    this.bounceCooldown = 5000;
+
+    this.spawn = this.spawn.bind(this);
+    this.split = this.split.bind(this);
+    this.explode = this.explode.bind(this);
+    this.randomBounce = this.randomBounce.bind(this);
+    this.takeDamage = this.takeDamage.bind(this);
+  }
+
+  spawn() {
+    this.setVelocityX(Math.random() * 1000);
+    this.setVelocityY(Math.random() * 900);
   }
 
   split() {
     // we want to duplicate the ball when it's hit
     let ballOne = new EnemyBall(this.scene, this.x + 30, this.y + 5);
     let ballTwo = new EnemyBall(this.scene, this.x + 3, this.y + 10);
-    // ballOne.body.setVelocityX(Math.random() * 1000);
     ballOne.setScale(0.15).setTint(0x800080);
-    // ballOne.setVelocityX(1000);
     ballTwo.setScale(0.15).setTint(0x800080);
     this.scene.enemiesGroup.add(ballOne);
     this.scene.enemiesGroup.add(ballTwo);
@@ -37,8 +49,8 @@ export default class EnemyBall extends Phaser.Physics.Arcade.Sprite {
         this.x + Math.random() * 30,
         this.y + Math.random() * 30
       );
+      this.scene.explodeGroup.add(ball);
       ball.setScale(0.15).setTint(0x800080);
-      // this.scene.enemiesGroup.add(ball);
       ball.setVelocityX(Math.random() * 100);
       ball.setVelocityY(Math.random() * 1000 + 500);
       this.scene.time.delayedCall(1000, () => {
@@ -47,13 +59,16 @@ export default class EnemyBall extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
+  randomBounce() {
+    this.setVelocityY(Math.random() * 2000);
+  }
+
   takeDamage(damage) {
     this.health -= damage;
     if (this.health <= 0) {
       // this will remove the killed ball from the game
-
       if (this.tintTopLeft === 16711680) this.explode();
-
+      if (this.tintTopLeft === 255) this.split();
       this.setActive(false);
       this.setVisible(false);
       this.body.enable = false;
@@ -63,21 +78,9 @@ export default class EnemyBall extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time, delta) {
-    // this.on('pointerdown', function (pointer) {
-    //   if (time > this.nextShot) {
-    //     this.shoot(pointer);
-    //     this.nextShot = time + this.cooldown;
-    //   }
-    // });
+    if (time > this.bounceTime) {
+      this.randomBounce();
+      this.bounceTime = time + this.bounceCooldown;
+    }
   }
 }
-
-// this is a factory function
-// Phaser.GameObjects.GameObjectFactory.register('ball', function (...args) {
-//   const ball = new Ball(this.scene, ...args);
-
-//   this.displayList.add(ball);
-//   this.updateList.add(ball);
-
-//   return ball;
-// });

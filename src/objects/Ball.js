@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-const ACCELERATION = 40;
+const ACCELERATION = 70;
 
 export default class Ball extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -68,6 +68,6 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time, delta) {
-    this.shoot(time);
+    if (this.health > 0) this.shoot(time);
   }
 }

@@ -3,10 +3,15 @@ import Bullets from '../objects/Bullet';
 import { width, height } from '../config/constants';
 import Ball from '../objects/Ball';
 import EnemyBall from '../objects/EnemyBall';
+import { levelOne } from '../levels/';
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
     super('GameScene');
+  }
+
+  reset() {
+    this.player.setPosition(300, 400);
   }
 
   preload() {
@@ -15,8 +20,7 @@ export default class GameScene extends Phaser.Scene {
 
   // this is a method on the class
   create() {
-    console.log(`Game Scene`);
-    console.log(`this context:`, this.sys.queueDepthSort);
+    console.log(this.children);
     // spawn player
     this.player = new Ball(this, 300, 400);
     this.player.setScale(0.15);
@@ -31,8 +35,17 @@ export default class GameScene extends Phaser.Scene {
       bounceX: 0.9,
       bounceY: 0.9,
       gravityY: 2000,
-      // velocityX: 500,
-      // velocityY: 500,
+      enable: true,
+    });
+    this.enemiesGroup.defaults = {};
+    this.explodeGroup = this.physics.add.group({
+      classType: EnemyBall,
+      runChildUpdate: true,
+      collideWorldBounds: true,
+      bounceX: 0.9,
+      bounceY: 0.9,
+      gravityY: 2000,
+      enable: true,
     });
 
     // set target
@@ -49,8 +62,6 @@ export default class GameScene extends Phaser.Scene {
         bullet.setActive(false);
         // this gives it the body (a hit box)
         bullet.body.enable = false;
-        // bullet.setVelocityX(0);
-        // bullet.setVelocityY(0);
         target.takeDamage(5);
       }
     );
@@ -58,6 +69,14 @@ export default class GameScene extends Phaser.Scene {
     this.physics.add.overlap(
       this.player,
       this.enemiesGroup,
+      (player, enemy) => {
+        player.takeDamage(5);
+        console.log('you have died');
+      }
+    );
+    this.physics.add.overlap(
+      this.player,
+      this.explodeGroup,
       (player, enemy) => {
         player.takeDamage(5);
         console.log('you have died');
@@ -76,13 +95,18 @@ export default class GameScene extends Phaser.Scene {
       down: Phaser.Input.Keyboard.KeyCodes.S,
       right: Phaser.Input.Keyboard.KeyCodes.D,
     });
+
+    levelOne.call(this);
   }
 
   update(time, delta) {
     const { left, right, up, down } = this.shoot;
-    // const { player } = world;
     this.player.update(time, delta);
 
+    if (this.shoot.space.isDown) {
+      const countActive = this.enemiesGroup.countActive();
+      console.log(countActive);
+    }
     if (left.isDown) {
       this.player.left();
     }
