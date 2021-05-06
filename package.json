@@ -12,6 +12,7 @@
     "webpack-cli": "^4.6.0"
   },
   "dependencies": {
-    "phaser": "^3.54.0"
+    "phaser": "^3.54.0",
+    "sass": "^1.32.12"
   }
 }
