@@ -19,10 +19,19 @@ export default class GameScene extends Phaser.Scene {
   }
 
   spawnBall() {
-    const colors = [0xff0000, 0x0000ff, 0xff084a];
+    const colors = [
+      0xff0000,
+      0x0000ff,
+      0xff084a,
+      0x00ff00,
+      0xffff00,
+      0xffa500,
+      0x4b0082,
+      0xee82ee,
+    ];
     const ball = new EnemyBall(this, Math.random() * 750, Math.random() * 500);
     this.enemiesGroup.add(ball);
-    const index = Math.floor(Math.random() * 3);
+    const index = Math.floor(Math.random() * colors.length);
     ball.setScale(0.15).setTint(colors[index]);
   }
 
