@@ -36,7 +36,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('ball', '../../public/assets/Image/ball.png');
+    this.load.image('ball', './assets/Image/ball.png');
   }
 
   // this is a method on the class
