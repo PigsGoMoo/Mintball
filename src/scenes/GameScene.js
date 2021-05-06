@@ -8,10 +8,22 @@ import { levelOne } from '../levels/';
 export default class GameScene extends Phaser.Scene {
   constructor() {
     super('GameScene');
+    this.spawn = 0;
+    this.spawnCD = 5000;
   }
 
   reset() {
     this.player.setPosition(300, 400);
+    this.player.setVelocityX(0);
+    this.player.setVelocityY(0);
+  }
+
+  spawnBall() {
+    const colors = [0xff0000, 0x0000ff, 0xff084a];
+    const ball = new EnemyBall(this, Math.random() * 750, Math.random() * 500);
+    this.enemiesGroup.add(ball);
+    const index = Math.floor(Math.random() * 3);
+    ball.setScale(0.15).setTint(colors[index]);
   }
 
   preload() {
@@ -20,7 +32,6 @@ export default class GameScene extends Phaser.Scene {
 
   // this is a method on the class
   create() {
-    console.log(this.children);
     // spawn player
     this.player = new Ball(this, 300, 400);
     this.player.setScale(0.15);
@@ -70,7 +81,12 @@ export default class GameScene extends Phaser.Scene {
       this.player,
       this.enemiesGroup,
       (player, enemy) => {
-        player.takeDamage(5);
+        const active = this.enemiesGroup.countActive();
+        for (let i = 0; i < active; i++) {
+          const enemy = this.enemiesGroup.getFirstAlive();
+          enemy.destroy();
+        }
+        this.reset();
         console.log('you have died');
       }
     );
@@ -78,7 +94,12 @@ export default class GameScene extends Phaser.Scene {
       this.player,
       this.explodeGroup,
       (player, enemy) => {
-        player.takeDamage(5);
+        const active = this.enemiesGroup.countActive();
+        for (let i = 0; i < active; i++) {
+          const enemy = this.enemiesGroup.getFirstAlive();
+          enemy.destroy();
+        }
+        this.reset();
         console.log('you have died');
       }
     );
@@ -96,12 +117,17 @@ export default class GameScene extends Phaser.Scene {
       right: Phaser.Input.Keyboard.KeyCodes.D,
     });
 
-    levelOne.call(this);
+    // levelOne.call(this);
   }
 
   update(time, delta) {
     const { left, right, up, down } = this.shoot;
     this.player.update(time, delta);
+
+    if (time > this.spawn) {
+      this.spawnBall();
+      this.spawn = time + this.spawnCD;
+    }
 
     if (this.shoot.space.isDown) {
       const countActive = this.enemiesGroup.countActive();
