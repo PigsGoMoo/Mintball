@@ -1,6 +1,4 @@
 /.cache
 /dist
 /node_modules
-/public/bundle.js
-*bundle.js
-public/bundle.js
+
