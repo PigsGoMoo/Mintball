@@ -54,6 +54,15 @@ export default class GameScene extends Phaser.Scene {
         target.takeDamage(5);
       }
     );
+    // this is making it so that when we get hit we die
+    this.physics.add.overlap(
+      this.player,
+      this.enemiesGroup,
+      (player, enemy) => {
+        player.takeDamage(5);
+        console.log('you have died');
+      }
+    );
 
     // set walls
     this.physics.world.setBounds(0, 0, width, height);

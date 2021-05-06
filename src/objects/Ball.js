@@ -16,14 +16,6 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
     this.health = 1;
   }
 
-  // For some reason, Phaser needs this empty method.
-  // preUpdate() {
-  //   if (!this.initialized) {
-  //     this.body.collideWorldBounds = true;
-  //     this.body.bounce.setTo(0.9, 0.9);
-  //   }
-  // }
-
   left() {
     this.body.setVelocityX(this.body.velocity.x - ACCELERATION);
   }
@@ -44,7 +36,6 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
     this.health -= damage;
     if (this.health <= 0) {
       // this will remove the killed ball from the game
-      this.split();
       this.setActive(false);
       this.setVisible(false);
       this.body.enable = false;
@@ -71,7 +62,6 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
         const bullet = this.scene.add.bullet(this, target, colors[pickedColor]);
         this.scene.physics.add.existing(bullet);
         this.scene.bulletsGroup.add(bullet);
-        // const bullet = this.scene.add.bullet(this.x, this.y, x, y);
         this.nextShot = time + this.cooldown;
       }
     }
@@ -79,21 +69,5 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
 
   update(time, delta) {
     this.shoot(time);
-    // this.on('pointerdown', function (pointer) {
-    //   if (time > this.nextShot) {
-    //     this.shoot(pointer);
-    //     this.nextShot = time + this.cooldown;
-    //   }
-    // });
   }
 }
-
-// this is a factory function
-// Phaser.GameObjects.GameObjectFactory.register('ball', function (...args) {
-//   const ball = new Ball(this.scene, ...args);
-
-//   this.displayList.add(ball);
-//   this.updateList.add(ball);
-
-//   return ball;
-// });
